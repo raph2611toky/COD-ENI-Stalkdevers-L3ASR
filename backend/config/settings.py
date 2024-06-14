@@ -1,10 +1,8 @@
 from pathlib import Path
 import os
 from datetime import timedelta
-from dotenv import load_dotenv
-load_dotenv()
 
-IP_ADDR = os.getenv('IP_ADDR')
+IP_ADDR = '127.0.0.1'
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -80,11 +78,11 @@ ASGI_APPLICATION = 'config.asgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DATABASE'),
-        'USER': os.getenv('USER_DB'),
-        'PASSWORD': os.getenv('PASSWORD_DB'),
+        'NAME': 'cityzen',
+        'USER': 'raph',
+        'PASSWORD': 'hpar',
         'HOST': IP_ADDR,
-        'PORT': os.getenv('PORT_DB'),
+        'PORT': 3306,
         'OPTIONS':{
             'charset': 'utf8mb4'
         }

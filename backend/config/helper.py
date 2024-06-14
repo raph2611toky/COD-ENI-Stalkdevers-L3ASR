@@ -13,6 +13,14 @@ from channels.db import database_sync_to_async
 from django.contrib.auth.models import AnonymousUser
 from rest_framework.request import Request
 from config import settings
+import pyqrcode
+import json
+
+def generate_qr_code(info_json, directory_to_upload,filename_to_save):
+    file_to_save = os.path.join(directory_to_upload,filename_to_save)+'.png'
+    qr = pyqrcode.create(json.dumps(info_json))
+    qr.png(file_to_save, scale=6)
+
 
 def image_to_text(image_path):
 	pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'

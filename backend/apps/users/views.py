@@ -30,12 +30,15 @@ def extract_information(text):
     cin = cin_match.group(1).strip() if cin_match else None
     dob = dob_match.group(1).strip() if dob_match else None
 
-    return {
+    data = {
         'name': name,
         'surname': surname,
         'cin': cin,
         'date_of_birth': dob,
     }
+    if 'REPOBLIKAN ‘I MADAGASIKARA'in text:
+        data['nationalité']='Malagasy'
+    return data
 
 class UserListView(APIView):
     permission_classes = [AllowAny]
@@ -112,12 +115,12 @@ class RegisterView(APIView):
     parser_classes = [MultiPartParser]
 
     def validate_data(self,data):
-        if any(not data[attr] for attr in ['name','email','password','confirm_password','contact','genre']):
+        if any(not data[attr] for attr in ['name','email','password','confirm_password','contact','genre','occupation','status_etat_civile']):
             return False
         return True
 
     def post(self, request):
-        # request.data.keys = ['name','email','password','confirm_password','contact','genre']
+        # request.data.keys = ['first_name','last_name','email','password','confirm_password','contact','genre','nationality']
         if not self.validate_data(request.data.copy()):return Response({'erreur':'Tous les attributs sont requis'},status=400)
         try:
             if request.data['password']!=request.data['confirm_password']:

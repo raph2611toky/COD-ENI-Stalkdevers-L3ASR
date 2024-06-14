@@ -32,6 +32,8 @@ class User(AbstractUser):
     genre = models.CharField(max_length=20, default='inconnu')
     contact = models.CharField(max_length=20, null=False)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='client_simple')
+    occupation = models.CharField(max_length=100)
+    status_etat_civile = models.CharField(max_length=100)
     is_validated = models.BooleanField(default=False)
     
     username = None
