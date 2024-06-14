@@ -8,19 +8,45 @@ import os
 import random
 import jwt
 
-#from apps.users.models import User
 from channels.db import database_sync_to_async
 from django.contrib.auth.models import AnonymousUser
 from rest_framework.request import Request
 from config import settings
 import pyqrcode
 import json
+#from __future__ import print_function
+import pyzbar.pyzbar as pyzbar
 
 def generate_qr_code(info_json, directory_to_upload,filename_to_save):
     file_to_save = os.path.join(directory_to_upload,filename_to_save)+'.png'
     qr = pyqrcode.create(json.dumps(info_json))
     qr.png(file_to_save, scale=6)
-
+ 
+def decode(image_path) : 
+    im=cv2.imread(image_path)
+    decodedObjects = pyzbar.decode(im)
+    
+    for obj in decodedObjects:
+        print('Type : ', obj.type)
+        print('Data : ', obj.data,'\n')
+        
+    return decodedObjects
+ 
+def display(im, decodedObjects):
+  for decodedObject in decodedObjects: 
+    points = decodedObject.polygon
+    if len(points) > 4 : 
+        hull = cv2.convexHull(np.array([point for point in points], dtype=np.float32))
+        hull = list(map(tuple, np.squeeze(hull)))
+    else : 
+        hull = points;
+    n = len(hull)
+    for j in range(0,n):
+        cv2.line(im, hull[j], hull[ (j+1) % n], (255,0,0), 3)
+ 
+    cv2.imshow("Results", im)
+    cv2.waitKey(0)
+ 
 
 def image_to_text(image_path):
 	pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
@@ -62,14 +88,3 @@ def face_recognition_save(image_path, directory_to_save, filename_to_save):
 def random_int(lower_bound,upper_bound):
 	return random.randint(lower_bound, upper_bound)
 
-def get_user(token):
-    try:
-        user_id = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.SIMPLE_JWT['ALGORITHM']])['user_id']
-    except jwt.exceptions.DecodeError:
-        return AnonymousUser()
-    except jwt.ExpiredSignatureError:
-        return AnonymousUser()
-    try:
-        return AnonymousUser() if user_id is None else User.objects.get(id=user_id)
-    except User.DoesNotExist:
-        return AnonymousUser()
