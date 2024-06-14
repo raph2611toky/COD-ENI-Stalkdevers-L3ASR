@@ -37,7 +37,7 @@ class User(AbstractUser):
     is_validated = models.BooleanField(default=False)
     
     username = None
-    USERNAME_FIELD = 'first_name'
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     objects = UserManager()

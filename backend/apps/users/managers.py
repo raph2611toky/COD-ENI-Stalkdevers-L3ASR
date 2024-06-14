@@ -4,12 +4,13 @@ from datetime import timedelta
 
 class UserManager(BaseUserManager):
     
-    def _create_user(self, first_name, password, is_staff, is_superuser, **extra_fields):
-        if not first_name:
-            raise ValueError('User must have an first_name address')
+    def _create_user(self, email, password, is_staff, is_superuser, **extra_fields):
+        if not email:
+            raise ValueError('User must have an email address')
         now = timezone.localtime(timezone.now()) + timedelta(hours=3)
+        email = self.normalize_email(email)
         user = self.model(
-            first_name=first_name.capitalize(),
+            email=email.capitalize(),
             is_staff=is_staff,
             is_superuser=is_superuser, 
             is_active=True,
@@ -21,11 +22,11 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
         
-    def create_user(self, first_name, password, **extra_fields):
-        return self._create_user(first_name, password, False, False, **extra_fields)
+    def create_user(self, email, password, **extra_fields):
+        return self._create_user(email, password, False, False, **extra_fields)
     
-    def create_staffuser(self, first_name,password,**extra_fields):
-        return self._create_user(first_name, password, True, False, **extra_fields)
+    def create_staffuser(self, email,password,**extra_fields):
+        return self._create_user(email, password, True, False, **extra_fields)
 
-    def create_superuser(self, first_name, password, **extra_fields):
-        return self._create_user(first_name, password, True, True, **extra_fields)
+    def create_superuser(self, email, password, **extra_fields):
+        return self._create_user(email, password, True, True, **extra_fields)

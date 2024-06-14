@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 from datetime import timedelta
 
-IP_ADDR = '127.0.0.1'
+IP_ADDR = '192.168.13.102'
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -15,6 +15,7 @@ ALLOWED_HOSTS = [IP_ADDR]
 
 LOCAL_APPS = [
     'apps.users.apps.UsersConfig',
+    'apps.services.apps.ServicesConfig'
 ]
 
 THIRD_PARTY_APPS = [
