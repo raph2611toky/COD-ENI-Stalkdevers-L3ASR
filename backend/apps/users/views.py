@@ -15,29 +15,26 @@ import os
 import re
 
 def extract_information(text):
-    name_pattern = re.compile(r'ANARANA\s*/\s*Nom:\s*(.*)')
-    surname_pattern = re.compile(r'FANAMPIN\'ANARANA\s*/\s*Prénom:\s*(.*)')
-    cin_pattern = re.compile(r'Numéro\s*de\s*CIN:\s*(\d{12})')
-    dob_pattern = re.compile(r'Date\s*de\s*naissance:\s*(\d{2}/\d{2}/\d{4})')
-
-    name_match = name_pattern.search(text)
-    surname_match = surname_pattern.search(text)
-    cin_match = cin_pattern.search(text)
-    dob_match = dob_pattern.search(text)
-
-    name = name_match.group(1).strip() if name_match else None
-    surname = surname_match.group(1).strip() if surname_match else None
-    cin = cin_match.group(1).strip() if cin_match else None
-    dob = dob_match.group(1).strip() if dob_match else None
-
-    data = {
-        'name': name,
-        'surname': surname,
-        'cin': cin,
-        'date_of_birth': dob,
+    patterns = {
+        'name': r'Nom:\s*(.*)',
+        'surname': r'Prenom\(s\):\s*(.*)',
+        'cin': r'cIN:\s*(.*)',
+        'dob': r'\d{2}/\d{2}/\d{4}',
+        'nationality': r'REPOBLIKAN ‘I MADAGASIKARA',
     }
-    if 'REPOBLIKAN ‘I MADAGASIKARA'in text:
-        data['nationalité']='Malagasy'
+
+    data = {}
+
+    for key, pattern in patterns.items():
+        match = re.search(pattern, text)
+        if match:
+            if key == 'dob':
+                data['date_of_birth'] = match.group().strip()
+            elif key == 'nationality':
+                data['nationality'] = 'Malagasy'
+            else:
+                data[key] = match.group(1).strip()
+
     return data
 
 class UserListView(APIView):
@@ -153,8 +150,9 @@ class GetInfoPhotoIdentityView(APIView):
             for chunk in identity_file.chunks():
                 destination.write(chunk)
         text = image_to_text(file_path)
-        if "REPOBLIKAN ‘I MADAGASIKARA\n\nFitiavana - Tanindrazana - Fandrosoana\n\nKARA-PANONDROM-PIRENENA\n(Carte Nationale d'Identité)"not in text:
-            return Response({'erreur':'la pièce d\'identité fourni n\'est pas un cin'},status=400)
+        print(text.split('\n'))
+        #if "REPOBLIKAN ‘I MADAGASIKARA\n\nFitiavana - Tanindrazana - Fandrosoana\n\nKARA-PANONDROM-PIRENENA\n(Carte Nationale d'Identité)"not in text:
+        #    return Response({'erreur':'la pièce d\'identité fourni n\'est pas un cin'},status=400)
         info = extract_information(text)
         photo_saved = face_recognition_save(file_path, directory_to_save, 'face_' + identity_file.name)
         return Response({

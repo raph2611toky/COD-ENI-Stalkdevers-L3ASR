@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 from PIL import Image
 import pytesseract
@@ -14,7 +15,6 @@ from rest_framework.request import Request
 from config import settings
 import pyqrcode
 import json
-#from __future__ import print_function
 import pyzbar.pyzbar as pyzbar
 
 def generate_qr_code(info_json, directory_to_upload,filename_to_save):
