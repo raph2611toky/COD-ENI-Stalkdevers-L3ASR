@@ -1,0 +1,42 @@
+body{
+    height: 99.4vh;
+}
+.acceuil{
+    border: 1px solid red;
+    height: 97.5vh;
+    display: flex;
+    flex-direction: column;
+}
+.headerAcceuil{
+    height: 12%;
+    width: 100%;
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+
+}
+.bodyAcceuil{
+    border : 1px solid green;
+    display: flex;
+    width: 100%;
+}   
+.headerAcceuilRight{
+    border: 1px solid yellow;
+    width: 50%;
+    display: flex;
+    justify-content: right;
+}
+.headerAcceuilLeft{
+    border: 1px solid yellow;
+    width: 50%;
+    font-size: 11px;
+    
+
+}
+.bodyAcceuilLeft{
+    border: 1px solid red;
+    width: 15%;
+    height: 100%;
+    border-left: 1px solid #ddd;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+}

@@ -1,0 +1,22 @@
+.login-form{
+    gap: 6%;
+    background-color: white;
+    height: 80%;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+    align-items: center;
+    padding: 1%;
+    border: 1px solid red;
+}
+.login-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 98.5vh; 
+    background-color: #f0f0f0;
+    padding: 40px; 
+    box-sizing: border-box;
+}
