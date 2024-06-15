@@ -15,29 +15,30 @@ import os
 import re
 
 def extract_information(text):
-    name_pattern = re.compile(r'ANARANA\s*/\s*Nom:\s*(.*)')
-    surname_pattern = re.compile(r'FANAMPIN\'ANARANA\s*/\s*Prénom:\s*(.*)')
-    cin_pattern = re.compile(r'Numéro\s*de\s*CIN:\s*(\d{12})')
-    dob_pattern = re.compile(r'Date\s*de\s*naissance:\s*(\d{2}/\d{2}/\d{4})')
-
-    name_match = name_pattern.search(text)
-    surname_match = surname_pattern.search(text)
-    cin_match = cin_pattern.search(text)
-    dob_match = dob_pattern.search(text)
-
-    name = name_match.group(1).strip() if name_match else None
-    surname = surname_match.group(1).strip() if surname_match else None
-    cin = cin_match.group(1).strip() if cin_match else None
-    dob = dob_match.group(1).strip() if dob_match else None
-
-    data = {
-        'name': name,
-        'surname': surname,
-        'cin': cin,
-        'date_of_birth': dob,
+    patterns = {
+        'name': r'Nom:\s*(\w+)',
+        'surname': r'Prenom\(s\)\s*(\w+\s\w+)',
+        'cin': r'cIN:\s*([^ ]+)',
+        'dob': r'(\d{1,2}/\d{1,2}/\d{4})\s*à\s*([\w\s]+)',
+        'im': r'N°\s*IM:\s*(\d+)',
+        'parcours': r'Parcours:\s*([\w\s]+)',
+        'niveau': r'Niveau:\s*(\w+\d+)',
+        'nationality': r'REPOBLIKAN ‘I MADAGASIKARA',
     }
-    if 'REPOBLIKAN ‘I MADAGASIKARA'in text:
-        data['nationalité']='Malagasy'
+
+    data = {}
+
+    for key, pattern in patterns.items():
+        match = re.search(pattern, text)
+        if match:
+            if key == 'dob':
+                data['date_of_birth'] = match.group(1).strip()
+                data['birth_place'] = match.group(2).strip()
+            elif key == 'nationality':
+                data['nationality'] = 'Malagasy'
+            else:
+                data[key] = match.group(1).strip()
+
     return data
 
 class UserListView(APIView):
@@ -112,28 +113,35 @@ class LoginView(APIView):
 
 class RegisterView(APIView):
     permission_classes = [AllowAny]
-    parser_classes = [MultiPartParser]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
-    def validate_data(self,data):
-        if any(not data[attr] for attr in ['name','email','password','confirm_password','contact','genre','occupation','status_etat_civile']):
-            return False
+    def validate_data(self, data):
+        required_fields = [
+            'first_name', 'last_name', 'email',
+            'password', 'confirm_password', 'contact', 
+            'genre', 'occupation', 'status_etat_civile'
+        ]
+        for field in required_fields:
+            if field not in data or not data[field]:
+                return False
         return True
 
     def post(self, request):
         # request.data.keys = ['first_name','last_name','email','password','confirm_password','contact','genre','nationality']
-        if not self.validate_data(request.data.copy()):return Response({'erreur':'Tous les attributs sont requis'},status=400)
+        if not self.validate_data(request.data):
+            return Response({'erreur': 'Tous les attributs sont requis'}, status=400)
+
         try:
-            if request.data['password']!=request.data['confirm_password']:
-                return Response({'erreur':'Les mots de passe fournies ne sont pas identiques.'},status=400)
-        
+            if request.data['password'] != request.data['confirm_password']:
+                return Response({'erreur': 'Les mots de passe fournis ne sont pas identiques.'}, status=400)
+            print(request.data)
             serializer = RegisterSerializer(data=request.data, context={'request': request})
             serializer.is_valid(raise_exception=True)
             user_saved = serializer.save()
             return Response(user_saved, status=201)
         except Exception as e:
             print(e)
-            return Response({'erreur':str(e)},status=400)
-        return Response(serializer.errors, status=400)
+            return Response({'erreur': str(e)}, status=400)
 
 
 class GetInfoPhotoIdentityView(APIView):
@@ -153,8 +161,8 @@ class GetInfoPhotoIdentityView(APIView):
             for chunk in identity_file.chunks():
                 destination.write(chunk)
         text = image_to_text(file_path)
-        if "REPOBLIKAN ‘I MADAGASIKARA\n\nFitiavana - Tanindrazana - Fandrosoana\n\nKARA-PANONDROM-PIRENENA\n(Carte Nationale d'Identité)"not in text:
-            return Response({'erreur':'la pièce d\'identité fourni n\'est pas un cin'},status=400)
+        #if "REPOBLIKAN ‘I MADAGASIKARA\n\nFitiavana - Tanindrazana - Fandrosoana\n\nKARA-PANONDROM-PIRENENA\n(Carte Nationale d'Identité)"not in text:
+        #    return Response({'erreur':'la pièce d\'identité fourni n\'est pas un cin'},status=400)
         info = extract_information(text)
         photo_saved = face_recognition_save(file_path, directory_to_save, 'face_' + identity_file.name)
         return Response({

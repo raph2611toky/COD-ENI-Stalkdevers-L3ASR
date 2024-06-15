@@ -70,9 +70,28 @@ class Demande(models.Model):
     etat = models.CharField(max_length=20, choices=ETAT_CHOICES, default='en_attente')
     documents_soumis = models.ManyToManyField(Document,related_name='documents')
     date_demande = models.DateTimeField(default=timezone.now)
+    last_modification = models.DateTimeField(default=default_created_at)
 
     def __str__(self):
         return f"{self.user.first_name} - {self.service.nom_service} ({self.get_etat_display()})"
     
+    def change_etat_en_attente(self):
+        self.etat = 'en_attente'
+        self.last_modification = default_created_at()
+    
+    def change_etat_en_cours(self):
+        self.etat = 'en_cours'
+        self.last_modification = default_created_at()
+        
+    def change_etat_en_complete(self):
+        self.etat = 'complet'
+        self.last_modification = default_created_at()
+        
+    def change_etat_en_rejete(self):
+        self.etat = 'rejete'
+        self.last_modification = default_created_at()
+    
     class Meta:
         db_table = 'demande'
+        
+        

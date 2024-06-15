@@ -12,19 +12,14 @@ from config import settings
 
 class UserSerializer(serializers.ModelSerializer):
     photo = serializers.SerializerMethodField()
-    name = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ['id', 'name', 'email', 'contact','photo', 'is_active', 'last_login', 'date_joined','role','is_superuser']
+        fields = ['id', 'first_name','last_name', 'email', 'contact','photo', 'is_active', 'last_login', 'date_joined','role','is_superuser']
 
     def get_photo(self, obj):
         return f"{settings.BASE_URL}api/users{obj.photo.url}" if obj.photo else None
     
-    def get_name(self, obj):
-        name = obj.first_name.capitalize()
-        if obj.last_name:name+=' '+obj.last_name
-        return 
 
 
 class LoginSerializer(serializers.Serializer):
@@ -54,7 +49,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'password', 'name', 'contact', 'photo']
+        fields = ['email', 'password', 'first_name','last_name','genre','occupation', 'contact', 'photo']
 
     def create(self, validated_data):
         print('validated_data')
