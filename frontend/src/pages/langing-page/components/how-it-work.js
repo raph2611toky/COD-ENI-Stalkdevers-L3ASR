@@ -5,8 +5,8 @@ import Animate from "./animate-translate";
 
 export default function HowItWorks() {
   return (
-    <div id="work" className="flex flex-col">
-      <div>
+    <div id="work" className="flex flex-col w-full">
+      <div >
         <Animate
           hidden={{ opacity: 0, translateY: 30 }}
           visible={{ opacity: 1, translateY: 0 }}
@@ -24,7 +24,7 @@ export default function HowItWorks() {
           </h3>
         </Animate>
       </div>
-      <div className="w-full flex justify-between flex-wrap pr-24 pt-10 bg-red-500">
+      <div className="w-full flex  justify-center gap-5 flex-wrap pr-24 pt-10">
         <Animate
           hidden={{ opacity: 0, translateY: 20 }}
           visible={{ opacity: 1, translateY: 0 }}

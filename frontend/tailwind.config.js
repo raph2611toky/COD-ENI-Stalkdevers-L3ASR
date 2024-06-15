@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        linear: "linear-gradient(90deg, #7F31FF 20%, #2BB2FF)",
+        linear: "linear-gradient(90deg, #FF527B, #3E1FFF)",
       },
       colors: {
         primary: "#9334DF",
@@ -12,6 +12,12 @@ module.exports = {
         contrast: "#0B1228",
         landing: "#07090D",
         features: "#10151E",
+      },
+      boxShadow: {
+        "right-lg":
+          "8px 8px 18px -3px rgba(0, 0, 0, 0.1), -8px -8px 8px -2px rgba(0, 0, 0, 0.05)",
+        "hover-right-lg":
+          "-15px 0px 18px -3px rgba(0, 0, 0, 0.2), 15px 0px 8px -2px rgba(0, 0, 0, 0.2)",
       },
     },
   },

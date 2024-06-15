@@ -30,20 +30,20 @@ export default function SideItem({
   return (
     <div
       className={
-        (children ? "h-16 hover:h-auto transition-all duration-500 " : "") +
-        (subItemClicked ? " h-auto " : " h-16 ") +
+        (children ? "h-12 hover:h-auto transition-all duration-500 " : "") +
+        (subItemClicked ? " h-16 " : " h-12 ") +
         (itemClicked == order ? "bg-gray-200" : "hover:bg-gray-200") +
-        " py-5  px-5  cursor-pointer  rounded-xl  transition-all flex flex-col gap-4 font-mono *:transition-all"
+        " py-2 pt-3  px-5  cursor-pointer  rounded-xl  transition-all flex flex-col gap-4 font-mono *:transition-all"
       }
       onClick={handleClick}
     >
       <div className="flex justify-start items-center gap-6 ">
-        <img src={icon} className="w-2" />
+        <img src={icon} className="h-4" />
         <p className="text-sm font-mono font-bold">{text}</p>
       </div>
-      {}
+    
       {children && (
-        <div className={"w-full overflow-y-hidden"}>
+        <div className={"w-full overflow-y-hidden bg-black"}>
           {subitems?.map((item, index) => {
             return (
               <div

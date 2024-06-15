@@ -3,10 +3,8 @@ import NavigationBar from "./components/navigation-bar";
 import "./Landing.css";
 import RightNavigation from "./components/right-navigation";
 import Banner from "./components/banner";
-import { higherImage } from "./assests";
 import HowItWorks from "./components/how-it-work";
-import KeyFeatures from "./components/key-features";
-import About from "./components/about";
+import KeyFeatures from "./components/key-features"; 
 import ContactUs from "./components/contact-us";
 import ContactForm from "./components/contact-form";
 
@@ -18,7 +16,6 @@ export const LandingPage = () => {
         <Banner />
         <HowItWorks />
         <KeyFeatures />
-        <About />
         <ContactUs />
         <ContactForm />
       </div>

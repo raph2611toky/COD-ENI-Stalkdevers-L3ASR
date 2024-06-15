@@ -14,10 +14,6 @@ export default function Animate({ children, delay, className, hidden, visible, t
         }
     }, [isInview]);
 
-
-    console.log('====================================');
-    console.log( (duration == null ? 0.2: duration));
-    console.log('====================================');;
     return (
         <motion.div
             ref={ref}

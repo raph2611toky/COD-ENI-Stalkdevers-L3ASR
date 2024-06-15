@@ -3,8 +3,9 @@ import { logo } from "../assests";
 import NavText from "./nav-text";
 import Button from "./button";
 import { higherImage, lowerImage } from "../assests";
-
+import { useNavigate } from "react-router-dom";
 const NavigationBar = () => {
+  const navigate = useNavigate()
   //ovaina bouton fa lasa misy saut à la ligne
   return (
     <div>
@@ -23,7 +24,7 @@ const NavigationBar = () => {
             <NavText text="fonctionnalité" href="#fonctionalite" />
             <NavText text="contact" href="#contact" />
           </div>
-          <Button text="Se Connecter" order="primary" href="/login" />
+          <Button text="Commencer" order="primary" href="/" />
         </div>
       </div>
     </div>
