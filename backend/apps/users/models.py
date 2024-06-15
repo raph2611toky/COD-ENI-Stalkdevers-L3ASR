@@ -46,7 +46,7 @@ class User(AbstractUser):
         return self.first_name.capitalize()
 
     def save(self, *args, **kwargs):
-        if 'defaults/users/photo/man1.jpg' in self.photo.name and self.genre.lower() == 'feminin':
+        if 'defaults/users/photo/man' in self.photo.name and self.genre.lower() == 'feminin':
             self.photo.name = choose_woman_profil()
 
         if self.role == 'client_staff' and not self.is_validated:
