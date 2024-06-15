@@ -1,0 +1,214 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Niveau 1 */
+  .chatBotContainer {
+    position: fixed;
+    z-index: 999;
+    right: 10px;
+    bottom: 30px;
+  }
+  
+  /* Niveau 2 */
+  .FullChat {
+    position: relative;
+  }
+  
+  /* Niveau 3 */
+  .chat {
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    animation: bounce 5s infinite;
+    position: relative;
+  }
+  
+  #chatStars {
+    position: absolute;
+    left: 0;
+    top: -7px;
+    transition: opacity 0.5s;
+  }
+  
+  .shadow {
+    width: 80px;
+    height: 20px;
+    background-color: black;
+    filter: blur(10px);
+    border-radius: 50%;
+    animation: shadowing 5s infinite;
+  }
+  
+  .chatMessage {
+    position: absolute;
+    padding: 8px;
+    width: 100px;
+    background-color: #242e42;
+    color: white;
+    font-family: Inter;
+    border-radius: 5px;
+    font-size: 10px;
+    top: -50px;
+    opacity: 0;
+    transition: opacity 1s;
+    right: 90%;
+    animation: showMessage 100s infinite;
+  }
+  
+  .eye {
+    width: 5px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: transparent;
+    position: absolute;
+    bottom: 48.97%;
+    left: 53.6%;
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      margin-bottom: 10px;
+    }
+    30% {
+      margin-bottom: 30px;
+    }
+    40% {
+      margin-bottom: 20px;
+    }
+    50% {
+      margin-bottom: 30px;
+    }
+    70% {
+      margin-bottom: 10px;
+    }
+  }
+  
+  @keyframes shadowing {
+    0%, 100% {
+      opacity: 1;
+    }
+    30% {
+      opacity: 0.5;
+    }
+    40% {
+      opacity: 0.7;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    70% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes showMessage {
+    0% {
+      opacity: 0;
+    }
+    15% {
+      opacity: 1;
+    }
+    17% {
+      opacity: 1;
+    }
+    20% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
+  .paused .chat,
+  .paused .shadow,
+  .paused .chatMessage {
+    animation-play-state: paused;
+  }
+  
+  .paused #chatStars {
+    opacity: 0;
+  }
+  
+  .paused .chatMessage {
+    opacity: 1;
+  }
+  
+  /* Chat frame styles */
+  .chatFrame {
+    position: fixed;
+    bottom: 110px; /* Adjust this value to position the chat frame above the bot */
+    right: 90px; /* Adjust this value to align with the bot */
+    width: 300px;
+    height: 400px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    animation-duration: 0.5s;
+  }
+  
+  .chatHeader {
+    background-color: #242e42;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .chatBody {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 14px;
+  }
+  
+  .closeButton {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+  }
+  
+  .fadeIn {
+    animation-name: fadeIn;
+  }
+  
+  .fadeOut {
+    animation-name: fadeOut;
+  }
+  
